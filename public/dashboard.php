@@ -1,14 +1,33 @@
 <?php
-// Inicia a sessão
 session_start();
-include('../includes/header.php'); // Cabeçalho comum
 
-// Verifica se o usuário está logado
 if (!isset($_SESSION['id_usuario'])) {
-    header('Location: login.php'); // Redireciona para o login se não estiver logado
+    header('Location: login.php');
     exit();
 }
 
-// Captura o nome do usuário para exibir na página
-$nome_usuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : "Usuário";
+include('../config/db.php');
+
+// Obtém os dados do usuário logado
+$stmt = $conn->prepare("SELECT * FROM usuarios WHERE id_usuario = :id");
+$stmt->bindParam(':id', $_SESSION['id_usuario']);
+$stmt->execute();
+$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Exibe o nome e tipo do usuário
+$nome_usuario = $usuario['nome'];
+$tipo_usuario = $usuario['tipo_usuario'];
 ?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Controle</title>
+</head>
+<body>
+    <h1>Bem-vindo, <?php echo htmlspecialchars($nome_usuario); ?>!</h1>
+    <p>Você está logado como: <?php echo htmlspecialchars($tipo_usuario); ?></p>
+    <a href="logout.php">Sair</a>
+</body>
+</html>

@@ -13,34 +13,27 @@
 
     <div class="register-main">
         <h1>Cadastro</h1>
-        <!-- Exibe mensagens de erro ou sucesso -->
-        <?php
-        session_start();
-        if (isset($_SESSION['error'])): ?>
-            <p style="color: red;"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></p>
-        <?php endif; ?>
-
-        <?php if (isset($_SESSION['success'])): ?>
-            <p style="color: green;"><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></p>
-        <?php endif; ?>
 
         <!-- Formulário de cadastro -->
         <form action="register.php" method="POST">
             <label for="nome">Nome:</label><br>
             <input type="text" name="nome" id="nome" required><br><br>
-
+        
             <label for="email">Email:</label><br>
             <input type="email" name="email" id="email" required><br><br>
-
+        
             <label for="senha">Senha:</label><br>
             <input type="password" name="senha" id="senha" required><br><br>
-
+        
             <label for="confirmar_senha">Confirmar Senha:</label><br>
             <input type="password" name="confirmar_senha" id="confirmar_senha" required><br><br>
-
+        
+            <label for="endereco">Endereço:</label><br>
+            <input type="text" name="endereco" id="endereco"><br><br>
+        
             <button type="submit">Cadastrar</button>
         </form>
-
+        
         <p>Já tem uma conta? <a href="login.html" class="transition-link">Faça login aqui</a></p>
     </div>
 
