@@ -3,15 +3,23 @@ session_start();
 include('../config/db.php');  // Incluindo o arquivo de conexão com o banco de dados
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nome = $_POST['nome'];  // Recebe o nome do formulário
-    $email = $_POST['email'];  // Recebe o email do formulário
+    // Filtra e sanitiza as entradas do formulário
+    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $senha = $_POST['senha'];  // Recebe a senha do formulário
     $confirmar_senha = $_POST['confirmar_senha'];  // Recebe a confirmação da senha
 
     // Verifica se as senhas coincidem
     if ($senha !== $confirmar_senha) {
         $_SESSION['error'] = 'As senhas não coincidem!';
-        header('Location: register.html');  // Redireciona de volta para o formulário de cadastro
+        header('Location: register.php');  // Redireciona de volta para o formulário de cadastro
+        exit();
+    }
+
+    // Valida o formato do e-mail
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = 'E-mail inválido!';
+        header('Location: register.php');  // Redireciona de volta para o formulário de cadastro
         exit();
     }
 
@@ -23,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($usuario) {
         $_SESSION['error'] = 'Email já cadastrado!';
-        header('Location: register.html');  // Redireciona de volta para o formulário de cadastro
+        header('Location: register.php');  // Redireciona de volta para o formulário de cadastro
         exit();
     }
 
@@ -37,12 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':senha', $senha_hash);
 
     if ($stmt->execute()) {
-        $_SESSION['success'] = 'Usuário cadastrado com sucesso!';
-        header('Location: login.html');  // Redireciona para a página de login
+        $_SESSION['success'] = 'Usuário cadastrado com sucesso! Agora você pode fazer login.';
+        header('Location: login.php');  // Redireciona para a página de login
         exit();
     } else {
         $_SESSION['error'] = 'Erro ao cadastrar o usuário!';
-        header('Location: register.html');  // Redireciona de volta para o formulário de cadastro
+        header('Location: register.php');  // Redireciona de volta para o formulário de cadastro
         exit();
     }
 }

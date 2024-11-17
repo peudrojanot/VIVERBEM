@@ -1,23 +1,19 @@
 <?php
-include '../includes/header.php';
+include '../includes/header.php';  // Inclui o cabeçalho
 
+// Inicia a sessão e verifica se o usuário já está logado
+session_start();
+if (isset($_SESSION['usuario_id'])) {
+    header('Location: dashboard.php');  // Se estiver logado, redireciona para o painel
+    exit();
+}
 
 // Conteúdo principal
 echo "<h1>Bem-vindo à Farmácia Online!</h1>";
+echo "<p><a href='login.php'>Clique aqui para fazer login</a></p>";  // Link para a página de login
 
 // Exibe produtos ou funcionalidades principais
-include '../includes/footer.php';
-?>
+// Aqui você pode incluir um loop para mostrar produtos ou promoções, por exemplo
 
-echo '<div class="login-container">
-        <h2>Login</h2>
-        <form action="./login.php" method="POST">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
-            
-            <label for="senha">Senha</label>
-            <input type="password" name="senha" id="senha" required>
-            
-            <button type="submit">Entrar</button>
-        </form>
-    </div>';
+include '../includes/footer.php';  // Inclui o rodapé
+?>

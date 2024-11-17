@@ -1,49 +1,59 @@
 <?php
-session_start();
-include('../config/db.php');  // Incluindo o arquivo de conexão com o banco de dados
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nome = $_POST['nome'];  // Recebe o nome do formulário
-    $email = $_POST['email'];  // Recebe o email do formulário
-    $senha = $_POST['senha'];  // Recebe a senha do formulário
-    $confirmar_senha = $_POST['confirmar_senha'];  // Recebe a confirmação da senha
-
-    // Verifica se as senhas coincidem
-    if ($senha !== $confirmar_senha) {
-        $_SESSION['error'] = 'As senhas não coincidem!';
-        header('Location: /farmacia_online/public/register.html');  // Corrigido o caminho
-        exit();
-    }
-
-    // Verifica se o email já está registrado
-    $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = :email");
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($usuario) {
-        $_SESSION['error'] = 'Email já cadastrado!';
-        header('Location: /farmacia_online/public/register.html');  // Corrigido o caminho
-        exit();
-    }
-
-    // Criptografa a senha antes de salvar no banco de dados
-    $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
-
-    // Insere o novo usuário no banco de dados
-    $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)");
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':senha', $senha_hash);
-
-    if ($stmt->execute()) {
-        $_SESSION['success'] = 'Usuário cadastrado com sucesso!';
-        header('Location: /farmacia_online/public/login.html');  // Corrigido o caminho
-        exit();
-    } else {
-        $_SESSION['error'] = 'Erro ao cadastrar o usuário!';
-        header('Location: /farmacia_online/public/register.html');  // Corrigido o caminho
-        exit();
-    }
-}
+session_start(); // Garantir que a sessão seja iniciada no início do arquivo
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Farmácia Online</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1 class="header-title">Bem-vindo à Farmácia Online!</h1>
+    </header>
+
+    <div class="login-main">
+        <h1>Login</h1>
+
+        <!-- Exibe a mensagem de erro ou sucesso se existir -->
+        <?php
+        // Exibindo as mensagens de erro ou sucesso
+        if (isset($_SESSION['error'])) {
+            echo '<p style="color: red;">' . $_SESSION['error'] . '</p>';
+            unset($_SESSION['error']);  // Limpa a mensagem de erro
+        }
+
+        if (isset($_SESSION['success'])) {
+            echo '<p style="color: green;">' . $_SESSION['success'] . '</p>';
+            unset($_SESSION['success']);  // Limpa a mensagem de sucesso
+        }
+
+        // Verifica se o usuário já está logado
+        if (isset($_SESSION['usuario_id'])) {
+            header('Location: dashboard.php');  // Se estiver logado, redireciona para o painel
+            exit();
+        }
+        ?>
+
+        <form action="login.php" method="POST">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required><br><br>
+
+            <label for="senha">Senha:</label>
+            <input type="password" name="senha" id="senha" required><br><br>
+
+            <button type="submit">Entrar</button>
+        </form>
+
+        <p>Não tem uma conta? <a href="register.php" class="transition-link">Cadastre-se aqui</a></p> <!-- Link para a página de registro -->
+    </div>
+
+    <footer class="footer">
+        <!-- Pode incluir o conteúdo do footer.php aqui -->
+    </footer>
+</body>
+</html>
+
+
