@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmácia Online - Página Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #3e8e41;
+            padding: 0.5rem 1rem;
+            color: white;
+        }
+        nav div {
+            display: flex;
+            gap: 1rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5rem;
+        }
+        nav a:hover {
+            background-color: #2e6d2c;
+            border-radius: 5px;
+        }
+        .container {
+            padding: 2rem;
+        }
+        .section-title {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .product {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .search-bar {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .search-bar input[type="text"] {
+            width: 50%;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .search-bar button {
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #3e8e41;
+        }
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bem Viver - Farmácia Online</h1>
+    </header>
+    <nav>
+        <div>
+            <a href="#medicamentos">Medicamentos</a>
+            <a href="#autocuidado">Autocuidado</a>
+            <a href="#suplementos">Suplementos</a>
+        </div>
+        <div>
+            <a href="#contato">Entre em Contato</a>
+            <a href="#carrinho">Carrinho</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="section-title">
+            <h2>Catálogo de Produtos</h2>
+        </div>
+        <div class="catalog">
+            <div class="product">
+                <p>Medicamento</p>
+            </div>
+            <div class="product">
+                <p>Autocuidado</p>
+            </div>
+            <div class="product">
+                <p>Suplemento</p>
+            </div>
+            <!-- Adicione mais produtos conforme necessário -->
+        </div>
+        <div class="search-bar">
+            <h3>Não encontrou o que procura? Faça uma pesquisa:</h3>
+            <input type="text" placeholder="Pesquise por produtos...">
+            <button>Buscar</button>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Farmácia Online. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
