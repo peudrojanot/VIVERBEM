@@ -1,26 +1,29 @@
 <?php
-session_start();
-include('../config/db.php');  // Incluindo o arquivo de conexão com o banco de dados
+session_start(); // Inicia a sessão para gerenciar mensagens
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Filtra e sanitiza as entradas do formulário
+// Inclui a conexão com o banco de dados
+include('../config/db.php');
+
+// Verifica se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Filtra e valida os dados do formulário
     $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $senha = $_POST['senha'];  // Recebe a senha do formulário
-    $confirmar_senha = $_POST['confirmar_senha'];  // Recebe a confirmação da senha
+    $senha = $_POST['senha'];
+    $confirmar_senha = $_POST['confirmar_senha'];
 
-    // Verifica se as senhas coincidem
+    // Valida se as senhas coincidem
     if ($senha !== $confirmar_senha) {
         $_SESSION['error'] = 'As senhas não coincidem!';
-        header('Location: register.php');  // Redireciona de volta para o formulário de cadastro
-        exit();
+        header('Location: register.html');
+        exit;
     }
 
-    // Valida o formato do e-mail
+    // Valida o formato do email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['error'] = 'E-mail inválido!';
-        header('Location: register.php');  // Redireciona de volta para o formulário de cadastro
-        exit();
+        header('Location: register.html');
+        exit;
     }
 
     // Verifica se o email já está registrado
@@ -30,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($usuario) {
-        $_SESSION['error'] = 'Email já cadastrado!';
-        header('Location: register.php');  // Redireciona de volta para o formulário de cadastro
-        exit();
+        $_SESSION['error'] = 'E-mail já cadastrado!';
+        header('Location: register.html');
+        exit;
     }
 
-    // Criptografa a senha antes de salvar no banco de dados
+    // Criptografa a senha
     $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
 
     // Insere o novo usuário no banco de dados
@@ -46,12 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
         $_SESSION['success'] = 'Usuário cadastrado com sucesso! Agora você pode fazer login.';
-        header('Location: login.php');  // Redireciona para a página de login
-        exit();
+        header('Location: login.html');
+        exit;
     } else {
         $_SESSION['error'] = 'Erro ao cadastrar o usuário!';
-        header('Location: register.php');  // Redireciona de volta para o formulário de cadastro
-        exit();
+        header('Location: register.html');
+        exit;
     }
+} else {
+    header('Location: register.html'); // Redireciona caso acessem o script diretamente
+    exit;
 }
-?>
+

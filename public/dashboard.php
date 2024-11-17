@@ -1,16 +1,14 @@
 <?php
+// Inicia a sessão
 session_start();
-include('../includes/header.php');
+include('../includes/header.php'); // Cabeçalho comum
 
 // Verifica se o usuário está logado
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php');  // Se não estiver logado, redireciona para o login
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: login.php'); // Redireciona para o login se não estiver logado
     exit();
 }
 
-echo "<h1>Bem-vindo, " . $_SESSION['usuario_nome'] . "!</h1>";
-echo "<p>Este é seu painel de controle.</p>";
-echo "<p><a href='logout.php'>Sair</a></p>";  // Link para sair
-
-include('../includes/footer.php');
+// Captura o nome do usuário para exibir na página
+$nome_usuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : "Usuário";
 ?>
